@@ -13,7 +13,3 @@ def main_loop(gd: GameDisplay) -> None:
             x += 1
         gd.draw_cell(x, y, "red")
         gd.end_round()
-
-
-if __name__ == "__main__":
-    main_loop(GameDisplay())

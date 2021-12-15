@@ -111,11 +111,6 @@ def main_loop(gd: GameDisplay) -> None:
         gd.end_round()
 
 
->>>>>> > e3c8be74c29e2d174517069307950af4ba885ae8
-
-   draw_objects(snake, gd, bomb, apples, score)
-
-
 def get_forbidden_coords(snake, bomb, apples):
     forbidden_coords = snake.get_coords()
     forbidden_coords.extend(bomb.get_coords())
@@ -126,8 +121,10 @@ def get_forbidden_coords(snake, bomb, apples):
 def generate_apple(coords: List[Tuple[int, int]]) -> Union[Apple, None]:
     if len(coords) == gp.WIDTH * gp.HEIGHT:
         return None
+
+
 def generate_apple(coords: List[Tuple[int, int]]) -> Apple:
-   apple = Apple()
+    apple = Apple()
     while apple.is_touched(coords):
         apple = Apple()
     return apple
@@ -160,22 +157,11 @@ def check_out_of_bounds(obj: Union[Snake, Bomb]):
         for coord in obj.get_coords():
             if check_coord_out_of_bounds(coord):
                 return True
-
     return False
 
 
 def check_coord_out_of_bounds(coord: Tuple[int, int]):
-
-
-<< << << < HEAD
-   if coord[0] < 0 or coord[0] >= gp.WIDTH \
+    if coord[0] < 0 or coord[0] >= gp.WIDTH \
             or coord[1] < 0 or coord[1] >= gp.HEIGHT:
         return True
     return False
-== =====
-   if coord[0] < 0 or coord[0] > gp.WIDTH \
-            or coord[1] < 0 or coord[1] > gp.HEIGHT:
-        return True
-    return False
->>>>>> > Stashed changes
->>>>>> > e3c8be74c29e2d174517069307950af4ba885ae8

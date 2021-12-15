@@ -61,7 +61,59 @@ def main_loop(gd: GameDisplay) -> None:
         # TODO check snake is not touching itself
         gd.end_round()
 
-    draw_objects(snake, gd, bomb, apples, score)
+
+def main_loop(gd: GameDisplay) -> None:
+    score = 0
+    snake = Snake()
+    bomb = Bomb()
+    apples: List[Apple] = []
+
+    forbidden_coords = snake.get_coords()
+    forbidden_coords.extend(bomb.get_coords())
+
+    for i in range(0, 3):
+        apples.append(generate_apple(forbidden_coords))
+        forbidden_coords.extend(apples[i].get_coords())
+
+    while bomb.is_touched(snake.get_coords()):
+        bomb = Bomb()
+
+    while True:
+        forbidden_coords = get_forbidden_coords(snake, bomb, apples)
+        draw_objects(snake, gd, bomb, apples, score)
+
+        key_clicked = gd.get_key_clicked()
+
+        if key_clicked in possible_directions:
+            snake.set_direction(key_clicked)
+
+        # eating apple check
+        for i in range(len(apples)):
+            opp_score = apples[i].is_touched(snake.get_coords())
+            if opp_score:
+                score += opp_score
+                snake.add_length(3)
+                apples[i] = generate_apple(forbidden_coords)
+
+        # if touch bomb
+        if(bomb.is_touched(snake.get_coords())):
+            break
+
+        bomb.update()
+        if check_out_of_bounds(bomb):
+            bomb = Bomb()
+
+        snake.update()
+        if check_out_of_bounds(snake):
+            break
+
+        # TODO check snake is not touching itself
+        gd.end_round()
+
+
+>>>>>> > e3c8be74c29e2d174517069307950af4ba885ae8
+
+   draw_objects(snake, gd, bomb, apples, score)
 
 
 def get_forbidden_coords(snake, bomb, apples):
@@ -74,7 +126,8 @@ def get_forbidden_coords(snake, bomb, apples):
 def generate_apple(coords: List[Tuple[int, int]]) -> Union[Apple, None]:
     if len(coords) == gp.WIDTH * gp.HEIGHT:
         return None
-    apple = Apple()
+def generate_apple(coords: List[Tuple[int, int]]) -> Apple:
+   apple = Apple()
     while apple.is_touched(coords):
         apple = Apple()
     return apple
@@ -112,7 +165,17 @@ def check_out_of_bounds(obj: Union[Snake, Bomb]):
 
 
 def check_coord_out_of_bounds(coord: Tuple[int, int]):
-    if coord[0] < 0 or coord[0] >= gp.WIDTH \
+
+
+<< << << < HEAD
+   if coord[0] < 0 or coord[0] >= gp.WIDTH \
             or coord[1] < 0 or coord[1] >= gp.HEIGHT:
         return True
     return False
+== =====
+   if coord[0] < 0 or coord[0] > gp.WIDTH \
+            or coord[1] < 0 or coord[1] > gp.HEIGHT:
+        return True
+    return False
+>>>>>> > Stashed changes
+>>>>>> > e3c8be74c29e2d174517069307950af4ba885ae8

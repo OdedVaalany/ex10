@@ -2,14 +2,14 @@ from typing import *
 import game_parameters as GP
 
 
-class bomb:
+class Bomb:
     """
     This class represent the bomb object in the snake game
     """
 
     def __init__(self) -> None:
-        y, x, self.__size, self.__time = GP.get_random_bomb_data()
-        self.__position = (y, x)
+        x, y, self.__size, self.__time = GP.get_random_bomb_data()
+        self.__position = (x, y)
 
     def get_position(self) -> Tuple[int, int]:
         """
@@ -27,14 +27,14 @@ class bomb:
         """
         if self.__time > 0:
             return [self.__position]
-        y: int = self.__position[0]
-        x: int = self.__position[1]
+        y: int = self.__position[1]
+        x: int = self.__position[0]
         ls: List[Tuple[int, int]] = []
         for i in range(abs(self.__time) + 2):
-            ls.append((y - ((abs(self.__time) + 1) - i), x - i))
-            ls.append((y - ((abs(self.__time) + 1) - i), x + i))
-            ls.append((y + ((abs(self.__time) + 1) - i), x + i))
-            ls.append((y + ((abs(self.__time) + 1) - i), x - i))
+            ls.append((x-i,y - ((abs(self.__time) + 1) - i)))
+            ls.append((x+i,y - ((abs(self.__time) + 1) - i)))
+            ls.append((x+i ,y + ((abs(self.__time) + 1) - i)))
+            ls.append((x-i,y + ((abs(self.__time) + 1) - i)))
         return ls
 
     def update(self) -> bool:

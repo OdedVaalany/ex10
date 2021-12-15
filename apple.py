@@ -2,10 +2,10 @@ from typing import *
 import game_parameters as GP
 
 
-class apple:
+class Apple:
     def __init__(self) -> None:
-        y, x, self.__score = GP.get_random_apple_data()
-        self.__position = (y, x)
+        x, y, self.__score = GP.get_random_apple_data()
+        self.__position = (x, y)
 
     def get_coords(self) -> List[Tuple[int, int]]:
         """

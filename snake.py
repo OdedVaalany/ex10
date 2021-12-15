@@ -67,7 +67,7 @@ class Snake:
         if self.direction == "Left":
             return (head_coords[0] - 1, head_coords[1])
             
-    def update(self) -> bool:
+    def update(self) -> None:
         """
         des: this function updates the snake's movement by one cell towards
              the snake's current movement direction. If cells are to be added
@@ -75,7 +75,7 @@ class Snake:
         return: True if update was succesful,
                 False otherwise
         """
-        if self.cells_to_add  == 0:
+        if self.cells_to_add == 0:
             self.snake.remove_tail()
         else:
             self.cells_to_add -= 1
@@ -83,12 +83,4 @@ class Snake:
         new_head = self._get_new_head_coord()
         self.snake.add_head(new_head) 
         
-        #TODO: maybe seperate function to check snake location
-        curr_head = self.snake.get_head().get_data()
-        if curr_head[0] < 0 or curr_head[0] > WIDTH \
-            or curr_head[1] < 0 or curr_head[1] > HEIGHT:
-                print("End of the road") #TODO: throw excpetion maybe?
-                return False
-            
-        return True
         

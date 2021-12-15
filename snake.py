@@ -3,7 +3,7 @@ from typing import List, Tuple
 from LinkedList import LinkedList
 from game_parameters import WIDTH, HEIGHT
 
-#TODO: where is the right location to put this
+#TODO: pointer to the tail
 possible_directions = ["Up", "Down", "Left", "Right"]
 
 class Snake:
@@ -12,7 +12,7 @@ class Snake:
         des: constructor of Snake, creates the snake using
              a linked list
         """
-        initial_coords = [(10,11), (10,12), (10,13)]
+        initial_coords = [ (10,13),  (10,12), (10,11)]
         
         self.snake = LinkedList()
         self.direction = "Up"
@@ -67,7 +67,7 @@ class Snake:
         if self.direction == "Left":
             return (head_coords[0] - 1, head_coords[1])
             
-    def update(self) -> None:
+    def update(self) -> bool:
         """
         des: this function updates the snake's movement by one cell towards
              the snake's current movement direction. If cells are to be added
@@ -81,6 +81,10 @@ class Snake:
             self.cells_to_add -= 1
         
         new_head = self._get_new_head_coord()
-        self.snake.add_head(new_head) 
         
+        if new_head in self.get_coords():
+            return False
+        
+        self.snake.add_head(new_head) 
+        return True
         

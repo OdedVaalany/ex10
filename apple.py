@@ -23,6 +23,11 @@ class apple:
         """
         pass
 
-
-if __name__ == "__main__":
-    apple()
+    def is_touched(self, coords: List[Tuple[int, int]]) -> Any:
+        """
+        des: check if the apple thouch in any cord from the given list
+        params: coords - list of coordinates
+        return: score if there is any touch' else None
+        """
+        if self.__position in coords:
+            return self.__score

@@ -102,7 +102,21 @@ class LinkedList:
         nh = Node(new_head)
         nh.set_next(self.__head)
         self.__head = nh
-
+        
+    # def remove_head(self) -> None:
+    #     """
+    #     des: Removes the lists first cell
+    #     """
+    #     if self.is_empty():
+    #         return None
+        
+    #     if self.get_head().get_next() == None:
+    #         self.__head = None
+    #         return None
+        
+    #     old_head = self.get_head()
+    #     self.__head = self.__head.get_next()
+    #     return old_head.get_data()
         
     def remove_tail(self) -> None:
         """
@@ -140,3 +154,27 @@ class LinkedList:
         
 
         return lst_data
+    
+    def remove_cell(self, key) -> None:
+        """
+        des: Removes the a cell from the list
+        """
+        temp = self.__head
+ 
+        if (temp is not None):
+            if (temp.get_data() == key):
+                self.__head = temp.get_next()
+                return
+ 
+        while(temp is not None):
+            if temp.get_data() == key:
+                break
+            prev = temp
+            temp = temp.get_next()
+ 
+        if(temp == None):
+            return
+ 
+        prev.set_next(temp.get_next())
+ 
+        temp = None

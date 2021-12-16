@@ -1,10 +1,10 @@
+from tkinter.constants import N
 from typing import List, Tuple
 
 from LinkedList import LinkedList
 from game_parameters import WIDTH, HEIGHT
 
-#TODO: pointer to the tail
-possible_directions = ["Up", "Down", "Left", "Right"]
+POSSIBLE_DIRECTIONS = ["Up", "Down", "Left", "Right"]
 
 class Snake:
     def __init__(self) -> None:
@@ -12,7 +12,7 @@ class Snake:
         des: constructor of Snake, creates the snake using
              a linked list
         """
-        initial_coords = [ (10,13),  (10,12), (10,11)]
+        initial_coords = [(10,10),  (10,9), (10,8)]
         
         self.snake = LinkedList()
         self.direction = "Up"
@@ -39,13 +39,22 @@ class Snake:
         params: num_to_add - number of cells to add
         """
         self.cells_to_add += num_to_add
+    
+    def get_head(self) -> Tuple[int,int]:
+        """
+        des: returns the head coordinate of the snake
+        """
+        return self.snake.get_head().get_data()
 
     def set_direction(self, new_direction: str) -> None:
         """
         des: set the snake's movement direction
         params: new_direction - wanted direction
         """
-        if new_direction in possible_directions and\
+        if not new_direction in POSSIBLE_DIRECTIONS:
+            return None
+        
+        if new_direction in POSSIBLE_DIRECTIONS and\
             not (self.direction == "Left" and new_direction == "Right") and\
             not (self.direction == "Right" and new_direction == "Left") and\
             not (self.direction == "Up" and new_direction == "Down") and\
@@ -83,6 +92,8 @@ class Snake:
         new_head = self._get_new_head_coord()
         
         if new_head in self.get_coords():
+            self.snake.remove_cell(new_head)
+            self.snake.add_head(new_head) 
             return False
         
         self.snake.add_head(new_head) 

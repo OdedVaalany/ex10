@@ -30,11 +30,12 @@ class Bomb:
         y: int = self.__position[1]
         x: int = self.__position[0]
         ls: List[Tuple[int, int]] = []
-        for i in range(abs(self.__time) + 2):
-            ls.append((x-i,y - ((abs(self.__time) + 1) - i)))
-            ls.append((x+i,y - ((abs(self.__time) + 1) - i)))
-            ls.append((x+i ,y + ((abs(self.__time) + 1) - i)))
-            ls.append((x-i,y + ((abs(self.__time) + 1) - i)))
+        curr_radius: int = abs(self.__time) + 1
+        for i in range(curr_radius):
+            ls.append((x + (curr_radius-i), y-i))
+            ls.append((x - (curr_radius-i), y+i))
+            ls.append((x - i, y - (curr_radius-i)))
+            ls.append((x + i, y + (curr_radius-i)))
         return ls
 
     def update(self) -> bool:

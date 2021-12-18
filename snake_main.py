@@ -7,6 +7,8 @@ from apple import Apple
 
 
 def main_loop(gd: GameDisplay) -> None:
+
+    # Define the game and it's variable
     score = 0
     snake = Snake()
     forbidden_coords = snake.get_coords()
@@ -23,34 +25,24 @@ def main_loop(gd: GameDisplay) -> None:
         apples.append(generate_apple(forbidden_coords))
         forbidden_coords.extend(apples[i].get_coords())
 #############################################################
-    flag = False
-    forbidden_coords = get_forbidden_coords(snake, bomb, apples)
-    for coord in snake.get_coords():
-        gd.draw_cell(coord[0], coord[1], "black")
-
-    bomb_coords = bomb.get_coords()
-    if len(bomb_coords) > 1:
-        for coord in bomb_coords:
-            gd.draw_cell(coord[0], coord[1], "orange")
-    else:
-        gd.draw_cell(bomb_coords[0][0], bomb_coords[0][1], "red")
-
-    for apple in apples:
-        coord = apple.get_coords()[0]
-        gd.draw_cell(coord[0], coord[1], "green")
-
     gd.show_score(score)
+    draw_objects(gd, score, snake, bomb, apples)
+    gd.end_round()
 
-##############################################################
     while game_end_reason == 0:
         forbidden_coords = get_forbidden_coords(snake, bomb, apples)
-        if flag:
-            draw_objects(gd, score, snake, bomb, apples)
-        else:
-            flag = True
 
         key_clicked = gd.get_key_clicked()
         snake.set_direction(key_clicked)
+
+        # snake step forward and check if he's touching himself
+        if not snake.update():
+            game_end_reason = 3
+
+        # update the bomb and check if it out of bounds
+        bomb.update()
+        if check_out_of_bounds(bomb):
+            bomb = generate_bomb(forbidden_coords)
 
         # eating apple check
         for i in range(len(apples)):
@@ -68,36 +60,17 @@ def main_loop(gd: GameDisplay) -> None:
 
         # if touch bomb
         if(bomb.is_touched(snake.get_coords())):
-            game_end_reason = 2
-
-        bomb.update()
-        if check_out_of_bounds(bomb):
-            # TODO: remvoe bomb coords from forbidden
-            bomb = generate_bomb(forbidden_coords)
-
-        if not snake.update():
-            game_end_reason = 3
+            game_end_reason = 4 if len(bomb.get_coords()) == 1 else 2
 
         if check_out_of_bounds(snake):
             game_end_reason = 4
 
-        gd.end_round()
-
-    if game_end_reason == 2:
-        draw_objects(gd, score, None, bomb, None)
-        gd.end_round()
-
-    # head = snake.get_head()
-    if game_end_reason == 1:
-        draw_objects(gd, score, snake, bomb, apples)
-        gd.end_round()
-
-    if game_end_reason == 3:
-        draw_objects(gd, score, snake, bomb, apples)
-        gd.end_round()
-
-    if game_end_reason == 4:
-        draw_objects(gd, score, snake, bomb, apples, [snake.get_head()])
+        if game_end_reason == 2:
+            draw_objects(gd=gd, score=score, bomb=bomb)
+        elif game_end_reason == 4:
+            draw_objects(gd, score, snake, bomb, apples, [snake.get_head()])
+        else:
+            draw_objects(gd, score, snake, bomb, apples)
         gd.end_round()
 
 
@@ -132,7 +105,9 @@ def generate_apple(coords: List[Tuple[int, int]]) -> Union[Apple, None]:
     return apple
 
 
-def draw_objects(gd, score, snake, bomb, apples, remove_cells_from_snake=[]):
+def draw_objects(
+        gd, score, snake=None, bomb=None, apples=None,
+        remove_cells_from_snake=[]):
     if apples:
         for apple in apples:
             coord = apple.get_coords()[0]
@@ -147,7 +122,8 @@ def draw_objects(gd, score, snake, bomb, apples, remove_cells_from_snake=[]):
         bomb_coords = bomb.get_coords()
         if len(bomb_coords) > 1:
             for coord in bomb_coords:
-                gd.draw_cell(coord[0], coord[1], "orange")
+                if not coord == (-1, -1):
+                    gd.draw_cell(coord[0], coord[1], "orange")
         else:
             gd.draw_cell(bomb_coords[0][0], bomb_coords[0][1], "red")
 
@@ -162,6 +138,8 @@ def check_out_of_bounds(obj: Union[Snake, Bomb]):
             return True
 
     elif type(obj) == Bomb:
+        if len(obj.get_coords()) == 2:
+            return False
         for coord in obj.get_coords():
             if check_coord_out_of_bounds(coord):
                 return True

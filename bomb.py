@@ -27,10 +27,12 @@ class Bomb:
         """
         if self.__time > 0:
             return [self.__position]
+        elif self.__time == 0:
+            return [self.__position, (-1, -1)]
         y: int = self.__position[1]
         x: int = self.__position[0]
         ls: List[Tuple[int, int]] = []
-        curr_radius: int = abs(self.__time) + 1
+        curr_radius: int = abs(self.__time)
         for i in range(curr_radius):
             ls.append((x + (curr_radius-i), y-i))
             ls.append((x - (curr_radius-i), y+i))

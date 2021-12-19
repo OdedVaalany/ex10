@@ -1,10 +1,16 @@
-from tkinter.constants import N
+#################################################################
+# FILE : snake.py
+# WRITER : int the AUTHORS file
+# EXERCISE : intro2cs2 ex10 2020
+# DESCRIPTION: Snake object
+# STUDENTS I DISCUSSED THE EXERCISE WITH: no one
+# WEB PAGES I USED: None
+# NOTES: ...
+#################################################################
 from typing import List, Tuple
-
 from LinkedList import LinkedList
-from game_parameters import WIDTH, HEIGHT
-
 POSSIBLE_DIRECTIONS = ["Up", "Down", "Left", "Right"]
+
 
 class Snake:
     def __init__(self) -> None:
@@ -12,12 +18,12 @@ class Snake:
         des: constructor of Snake, creates the snake using
              a linked list
         """
-        initial_coords = [(10,10),  (10,9), (10,8)]
-        
+        initial_coords = [(10, 10),  (10, 9), (10, 8)]
+
         self.snake = LinkedList()
         self.direction = "Up"
         self.cells_to_add = 0
-        
+
         for coord in initial_coords:
             self.snake.add(coord)
 
@@ -26,21 +32,21 @@ class Snake:
         return: list of all the snake's coords of coord (y,x)
         """
         return self.snake.get_list()
-    
+
     def get_direction(self) -> str:
         """
         return: the snake's current movement direction
         """
         return self.direction
-    
+
     def add_length(self, num_to_add: int) -> None:
         """
         des: add cells to the snake's tail
         params: num_to_add - number of cells to add
         """
         self.cells_to_add += num_to_add
-    
-    def get_head(self) -> Tuple[int,int]:
+
+    def get_head(self) -> Tuple[int, int]:
         """
         des: returns the head coordinate of the snake
         """
@@ -53,14 +59,14 @@ class Snake:
         """
         if not new_direction in POSSIBLE_DIRECTIONS:
             return None
-        
-        if new_direction in POSSIBLE_DIRECTIONS and\
-            not (self.direction == "Left" and new_direction == "Right") and\
-            not (self.direction == "Right" and new_direction == "Left") and\
-            not (self.direction == "Up" and new_direction == "Down") and\
-            not (self.direction == "Down" and new_direction == "Up"):
+
+        if new_direction in POSSIBLE_DIRECTIONS and not(
+                self.direction == "Left" and new_direction == "Right") and not(
+                self.direction == "Right" and new_direction == "Left") and not(
+                self.direction == "Up" and new_direction == "Down") and not(
+                self.direction == "Down" and new_direction == "Up"):
             self.direction = new_direction
-    
+
     def _get_new_head_coord(self) -> Tuple[int, int]:
         """
         return: Tuple with the new head coord calculated 
@@ -75,7 +81,7 @@ class Snake:
             return (head_coords[0] + 1, head_coords[1])
         if self.direction == "Left":
             return (head_coords[0] - 1, head_coords[1])
-            
+
     def update(self) -> bool:
         """
         des: this function updates the snake's movement by one cell towards
@@ -88,14 +94,13 @@ class Snake:
             self.snake.remove_tail()
         else:
             self.cells_to_add -= 1
-        
+
         new_head = self._get_new_head_coord()
-        
+
         if new_head in self.get_coords():
             self.snake.remove_cell(new_head)
-            self.snake.add_head(new_head) 
+            self.snake.add_head(new_head)
             return False
-        
-        self.snake.add_head(new_head) 
+
+        self.snake.add_head(new_head)
         return True
-        

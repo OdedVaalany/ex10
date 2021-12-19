@@ -1,19 +1,31 @@
+#################################################################
+# FILE : LinkedList.py
+# WRITER : int the AUTHORS file
+# EXERCISE : intro2cs2 ex10 2020
+# DESCRIPTION: we built Node and LinkedList class to help our work
+# STUDENTS I DISCUSSED THE EXERCISE WITH: no one
+# WEB PAGES I USED: None
+# NOTES: ...
+#################################################################
 from __future__ import annotations
 from typing import Any, List, Tuple
+
 
 class Node:
     """
     Class Node is an implementation to a node in a linked list.
     Node has data and a pointer to the next Node.
     """
-    def __init__(self, data: Tuple[int, int] = None, next: Node=None) -> None:
+
+    def __init__(
+            self, data: Tuple[int, int] = None, next: Node = None) -> None:
         """
         des: Node constructor creates a new node with data if recieved,
              and pointer to next Node if recieved.
         params: Node constructor creates a new node with data recieved
         """
         self.__data = data
-        self.__next  = next
+        self.__next = next
 
     def __str__(self) -> str:
         """
@@ -33,7 +45,7 @@ class Node:
         """
         return self.__next
 
-    def set_data(self, data: Tuple[int, int]) -> None:        
+    def set_data(self, data: Tuple[int, int]) -> None:
         """
         des: set the Node's data to the data recieved
         params: data: the data to set
@@ -53,6 +65,7 @@ class LinkedList:
     LinkedList class wrappes Node and provieds an API to use a linked 
     list of nodes.
     """
+
     def __init__(self, head: Node = None) -> None:
         """
         des: Node constructor creates a new list with node as head if
@@ -86,13 +99,13 @@ class LinkedList:
         if self.get_head().get_next() == None:
             self.get_head().set_next(Node(data))
             return
-        
+
         iterator = self.get_head()
-        
+
         while(iterator.get_next()):
             iterator = iterator.get_next()
         iterator.set_next(Node(data))
-    
+
     def add_head(self, new_head: Tuple[int, int]) -> None:
         """
         des: adds a Node to the head of the list, with the node's data
@@ -102,40 +115,40 @@ class LinkedList:
         nh = Node(new_head)
         nh.set_next(self.__head)
         self.__head = nh
-        
+
     # def remove_head(self) -> None:
     #     """
     #     des: Removes the lists first cell
     #     """
     #     if self.is_empty():
     #         return None
-        
+
     #     if self.get_head().get_next() == None:
     #         self.__head = None
     #         return None
-        
+
     #     old_head = self.get_head()
     #     self.__head = self.__head.get_next()
     #     return old_head.get_data()
-        
+
     def remove_tail(self) -> None:
         """
         des: Removes the lists last cell
         """
         if self.is_empty():
             return None
-        
+
         if self.get_head().get_next() == None:
             self.__head = None
             return
-        
+
         second_last = self.get_head()
-        
+
         while(second_last.get_next().get_next()):
             second_last = second_last.get_next()
         second_last.set_next(None)
-        
-    def get_list(self) ->  List[Tuple[int, int]]:
+
+    def get_list(self) -> List[Tuple[int, int]]:
         """
         return: a list of the snake's coordinates represnted
                 by tuples
@@ -145,36 +158,35 @@ class LinkedList:
             return []
 
         lst_data.append(self.get_head().get_data())
-        
+
         iterator = self.get_head()
-        
+
         while(iterator.get_next()):
             iterator = iterator.get_next()
             lst_data.append(iterator.get_data())
-        
 
         return lst_data
-    
+
     def remove_cell(self, key) -> None:
         """
         des: Removes the a cell from the list
         """
         temp = self.__head
- 
+
         if (temp is not None):
             if (temp.get_data() == key):
                 self.__head = temp.get_next()
                 return
- 
+
         while(temp is not None):
             if temp.get_data() == key:
                 break
             prev = temp
             temp = temp.get_next()
- 
+
         if(temp == None):
             return
- 
+
         prev.set_next(temp.get_next())
- 
+
         temp = None

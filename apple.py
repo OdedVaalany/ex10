@@ -1,8 +1,21 @@
+#################################################################
+# FILE : apple.py
+# WRITER : int the AUTHORS file
+# EXERCISE : intro2cs2 ex10 2020
+# DESCRIPTION: Apple object
+# STUDENTS I DISCUSSED THE EXERCISE WITH: no one
+# WEB PAGES I USED: None
+# NOTES: ...
+#################################################################
 from typing import *
 import game_parameters as GP
 
 
 class Apple:
+    """
+    this object represent the apple object in snake game
+    """
+
     def __init__(self) -> None:
         x, y, self.__score = GP.get_random_apple_data()
         self.__position = (x, y)
@@ -14,14 +27,6 @@ class Apple:
         return: list of (y,x)
         """
         return [self.__position]
-
-    def update(self) -> None:
-        """
-        des: notice to the obj that 1 timelape passed
-        params: None
-        return: None
-        """
-        pass
 
     def is_touched(self, coords: List[Tuple[int, int]]) -> Any:
         """

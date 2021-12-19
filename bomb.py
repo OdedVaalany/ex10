@@ -1,3 +1,12 @@
+#################################################################
+# FILE : bomb.py
+# WRITER : int the AUTHORS file
+# EXERCISE : intro2cs2 ex10 2020
+# DESCRIPTION: Bomb object
+# STUDENTS I DISCUSSED THE EXERCISE WITH: no one
+# WEB PAGES I USED: None
+# NOTES: ...
+#################################################################
 from typing import *
 import game_parameters as GP
 
@@ -51,7 +60,7 @@ class Bomb:
             return True
         return False
 
-    def is_touched(self, coords: List[Tuple[int, int]]) -> bool:
+    def is_touched(self, coords: List[Tuple[int, int]]) -> Union[Tuple[int, int], None]:
         """
         des: check if the bomb/explotion wave touch with any coord in given coords list
         :params: coords list
@@ -60,5 +69,4 @@ class Bomb:
         my_coords: List[Tuple[int, int]] = self.get_coords()
         for me in my_coords:
             if me in coords:
-                return True
-        return False
+                return me
